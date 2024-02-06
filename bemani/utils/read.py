@@ -3323,17 +3323,18 @@ class ImportDDR(ImportBase):
         no_combine: bool,
         update: bool,
     ) -> None:
-        if version in ["12", "13", "14", "15", "16"]:
+        if version in ["12", "13", "14", "15", "16", "17"]:
             actual_version = {
                 "12": VersionConstants.DDR_X2,
                 "13": VersionConstants.DDR_X3_VS_2NDMIX,
                 "14": VersionConstants.DDR_2013,
                 "15": VersionConstants.DDR_2014,
                 "16": VersionConstants.DDR_ACE,
+                "17": VersionConstants.DDR_A20,
             }[version]
             self.charts = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         else:
-            raise CLIException("Unsupported DDR version, expected one of the following: 12, 13, 14, 15, 16")
+            raise CLIException("Unsupported DDR version, expected one of the following: 12, 13, 14, 15, 16, 17")
 
         super().__init__(config, GameConstants.DDR, actual_version, no_combine, update)
 
@@ -3754,6 +3755,8 @@ class ImportDDR(ImportBase):
                 16: 15,
                 17: 16,
                 18: 17,
+                19: 18,
+                20: 19,
             }[folder]
 
             songinfo = {
@@ -5152,7 +5155,7 @@ def main() -> None:
         if args.server and args.token:
             songs = ddr.lookup(args.server, args.token)
         else:
-            if args.version == "16":
+            if args.version == "16" or args.version == "17":
                 if args.bin is None:
                     raise CLIException("No startup.arc provided!")
                 # DDR Ace has a different format altogether
